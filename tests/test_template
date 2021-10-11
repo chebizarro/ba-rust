@@ -1,0 +1,31 @@
+
+#[test]
+fn {test_name}() {{
+  let input = include_str!("{path}");
+  let mut lines = input.lines();
+
+  assert_eq!("Input", lines.next().unwrap());
+
+  let params = lines.by_ref()
+                    .take_while(|&n| n != "Output")
+                    .collect::<Vec<&str>>();  
+
+  let output = lines.flat_map(|n| n.split_ascii_whitespace())
+                    .map(|n| n.to_string())
+                    .collect::<Vec<String>>();  
+
+  let result = {name}(&params);
+
+  if output.len() > 0 {{
+    for res in result.iter() {{
+      assert!(output.contains(res));
+    }}
+  }} else {{
+    let out = result.iter()
+          .map(|n| n.as_str())
+          .intersperse(" ")
+          .collect::<String>();
+    println!("{{}}", out);
+  }}
+}}
+

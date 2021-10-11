@@ -1,0 +1,12 @@
+[package]
+name = "ba-rust"
+version = "0.1.0"
+authors = ["Chris Daley <chebizarro@gmail.com>"]
+edition = "2018"
+
+[lib]
+name = "ba_rust"
+path = "src/lib.rs"
+
+[dependencies]
+itertools = "0.10.1"
