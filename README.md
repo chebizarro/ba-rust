@@ -1,6 +1,6 @@
 # Rust Implementation of Bioinformatics Algorithms
 
-This repository contains implementations of the exercises in the [Bioinformatics Algorithms: An Active Learning Approach](https://www.bioinformaticsalgorithms.org/) book and the [Bioinformatics Specialization](https://www.coursera.org/specializations/bioinformatics) in [Rust](https://www.rust-lang.org/).
+This repository contains implementations of the exercises in the [Bioinformatics Algorithms: An Active Learning Approach](https://www.bioinformaticsalgorithms.org/) book and the Coursera [Bioinformatics Specialization](https://www.coursera.org/specializations/bioinformatics) in [Rust](https://www.rust-lang.org/).
 
 I started this project in order to learn both Rust and Bioinformatics. There is a companion blog which is in development.
 

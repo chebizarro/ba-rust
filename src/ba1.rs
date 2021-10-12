@@ -55,3 +55,35 @@ pub fn vibrio_cholerae(input: &Vec<&str>) -> Vec<String> {
 
   return result;  
 }
+
+pub fn ba1e(input: &Vec<&str>) -> Vec<String> {
+
+  let output = find_clumps(
+    input[0],
+    input[1].parse::<usize>().unwrap(),
+    input[2].parse::<usize>().unwrap(),
+    input[3].parse::<usize>().unwrap()
+  );
+
+  let result = output.iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<String>>();
+
+  return result;  
+}
+
+pub fn e_coli(input: &Vec<&str>) -> Vec<String> {
+
+  let output = find_clumps(
+    input[0],
+    input[1].parse::<usize>().unwrap(),
+    input[2].parse::<usize>().unwrap(),
+    input[3].parse::<usize>().unwrap()
+  );
+
+  let result = output.iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<String>>();
+
+  return result;  
+}

@@ -8,6 +8,7 @@ fn {test_name}() {{
 
   let params = lines.by_ref()
                     .take_while(|&n| n != "Output")
+                    .flat_map(|n| n.split_ascii_whitespace())
                     .collect::<Vec<&str>>();  
 
   let output = lines.flat_map(|n| n.split_ascii_whitespace())
