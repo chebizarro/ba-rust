@@ -108,3 +108,33 @@ pub fn find_clumps(text: &str, k: usize, l: usize, t: usize) -> Vec<&str> {
   patterns.dedup();
   return patterns;
 }
+
+fn check_if_pattern_is_clump(index_list: &Vec<usize>, max_diff: usize, t: usize) -> bool {
+  if index_list.len() < t {
+      return false
+  }
+
+  for i in 0..(index_list.len() - t + 1) {
+      if index_list[i + t - 1] - index_list[i] <= max_diff {
+          return true
+      }
+  }
+  false
+}
+
+// Based on the solution posted here: 
+// https://stepik.org/lesson/4/step/6?discussion=3034577&thread=solutions&unit=8233
+
+pub fn find_clumps_fast(genome: &str, k: usize, l: usize, t: usize) -> Vec<&str> {
+  let mut k_mer_map = HashMap::new();
+  for i in 0 .. (genome.len() - k + 1) {
+      (*k_mer_map.entry(&genome[i..i+k]).or_insert(Vec::<usize>::new())).push(i);
+  }
+  let max_diff = l - k;
+  
+  let result = k_mer_map.iter()
+    .filter(|&(_, v)| check_if_pattern_is_clump(v, max_diff, t))
+    .map(|(k, _)| *k)
+    .collect();
+  return result;
+}

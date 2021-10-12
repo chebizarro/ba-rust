@@ -74,7 +74,7 @@ pub fn ba1e(input: &Vec<&str>) -> Vec<String> {
 
 pub fn e_coli(input: &Vec<&str>) -> Vec<String> {
 
-  let output = find_clumps(
+  let output = find_clumps_fast(
     input[0],
     input[1].parse::<usize>().unwrap(),
     input[2].parse::<usize>().unwrap(),
@@ -84,6 +84,8 @@ pub fn e_coli(input: &Vec<&str>) -> Vec<String> {
   let result = output.iter()
                     .map(|x| x.to_string())
                     .collect::<Vec<String>>();
+
+  println!("{}", output.len());
 
   return result;  
 }
