@@ -116,6 +116,8 @@ pub fn ba1h(input: &Vec<&str>) -> Vec<String> {
 
   let output = approximate_pattern_matching(input[1], input[0], input[2].parse::<i32>().unwrap());
 
+  println!("{}", output.len());
+
   let result = output.iter()
                     .map(|x| x.to_string())
                     .collect::<Vec<String>>();
