@@ -165,11 +165,10 @@ pub fn minimize_skew(genome: &str) -> Vec<i32> {
 }
 
 pub fn hamming_distance(p: &str, q: &str) -> i32 {
-  return p
-    .chars()
-    .zip(q.chars())
-    .filter(|(pc, qc)| !pc.eq(qc))
-    .count() as i32;
+  return p.chars()
+          .zip(q.chars())
+          .filter(|(pc, qc)| !pc.eq(qc))
+          .count() as i32;
 }
 
 pub fn approximate_pattern_matching(text: &str, pattern: &str, d: i32) -> Vec<i32> {
@@ -184,3 +183,14 @@ pub fn approximate_pattern_matching(text: &str, pattern: &str, d: i32) -> Vec<i3
   return positions;
 }
 
+pub fn approximate_pattern_count(text: &str, pattern: &str, d: i32) -> i32 {
+  let mut count = 0;
+
+  for i in 0..=(text.len()-pattern.len()) {
+    let pat_p = &text[i..i+pattern.len()];
+    if hamming_distance(pattern, pat_p) <= d {
+      count += 1;
+    }
+  }
+  return count;
+}

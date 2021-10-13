@@ -128,3 +128,18 @@ pub fn ba1h(input: &Vec<&str>) -> Vec<String> {
 
   return result;  
 }
+
+pub fn ba1h2(input: &Vec<&str>) -> Vec<String> {
+
+  let output = approximate_pattern_count(
+    input[1],
+    input[0],
+    input[2].parse::<i32>().unwrap()
+  );
+
+  let mut result = Vec::new();
+  
+  result.push(output.to_string());
+
+  return result;
+}
