@@ -138,3 +138,50 @@ pub fn find_clumps_fast(genome: &str, k: usize, l: usize, t: usize) -> Vec<&str>
     .collect();
   return result;
 }
+
+pub fn minimize_skew(genome: &str) -> Vec<i32> {
+  let mut skew = vec![0; genome.len() + 1];
+
+  for i in 0..genome.len() {
+    let score = match &genome[i..i + 1] {
+      "A" => skew[i],
+      "C" => skew[i] - 1,
+      "T" => skew[i],
+      "G" => skew[i] + 1,
+      _ => skew[i],
+    };
+    skew[i + 1] = score;
+  }
+
+  let min = skew.iter().min().unwrap();
+  let mut min_vec = Vec::new();
+
+  for i in 0..skew.len() {
+    if skew[i] == *min {
+      min_vec.push(i as i32);
+    }
+  }
+
+  return min_vec;
+}
+
+pub fn hamming_distance(p: &str, q: &str) -> i32 {
+  return p
+    .chars()
+    .zip(q.chars())
+    .filter(|(pc, qc)| !pc.eq(qc))
+    .count() as i32;
+}
+
+pub fn approximate_pattern_matching(text: &str, pattern: &str, d: i32) -> Vec<i32> {
+  let mut positions = Vec::new();
+
+  for i in 0..=(text.len()-pattern.len()) {
+    let pat_p = &text[i..i+pattern.len()];
+    if hamming_distance(pattern, pat_p) <= d {
+      positions.push(i as i32);
+    }
+  }
+  return positions;
+}
+

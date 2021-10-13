@@ -18,8 +18,8 @@ fn {test_name}() {{
   let result = {name}(&params);
 
   if output.len() > 0 {{
-    for res in result.iter() {{
-      assert!(output.contains(res));
+    for res in output.iter() {{
+      assert!(result.contains(res));
     }}
   }} else {{
     let out = result.iter()
