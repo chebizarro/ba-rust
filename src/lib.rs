@@ -2,7 +2,6 @@ pub mod ba1;
 
 use std::collections::HashMap;
 
-
 pub fn pattern_count(text: &str, pattern: &str) -> i32 {
   let mut count = 0;
 
