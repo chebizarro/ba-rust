@@ -194,3 +194,46 @@ pub fn approximate_pattern_count(text: &str, pattern: &str, d: i32) -> i32 {
   }
   return count;
 }
+
+pub fn frequent_words_with_mismatches(text: &str, k: usize, d: i32) -> Vec<&str> {
+  let mut patterns = Vec::new();
+  let mut freq_map = HashMap::new();
+  let n = text.len();
+
+  for i in 0..=(n-k) {
+    let pattern = &text[i..i+k];
+    let neighborhood = neighbors(pattern, d);
+    for j in 0..=neighborhood.len() {
+      let neighbor = neighborhood[j];
+      if !freq_map.contains_key(neighbor) {
+        freq_map.insert(neighbor, 1);
+      } else {
+        freq_map.insert(neighbor, freq_map[neighbor] + 1);
+      }
+    }
+  }
+
+  let m = freq_map.values().max().unwrap();
+
+  for (pattern,_) in freq_map {
+    if freq_map[pattern] == *m {
+      patterns.push(pattern);
+    }
+  }
+
+  return patterns;
+
+}
+
+fn immediate_neighbors(pattern: &str) -> Vec<&str> {
+  let mut neighborhood = Vec::new();
+  let nucleotides = ["A", "C", "G", "T"];
+
+  for i in 0..=pattern.len() {
+    let symbol = &pattern[i..i];
+    for &x in nucleotides.iter().filter(|&n| *n != symbol) {
+        let neighbor = format!("{}{}{}", pattern[0..i],*x,pattern[i+1..]);
+    } 
+  }
+  return neighborhood;
+}
