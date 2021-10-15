@@ -143,3 +143,18 @@ pub fn ba1h2(input: &Vec<&str>) -> Vec<String> {
 
   return result;
 }
+
+pub fn ba1i(input: &Vec<&str>) -> Vec<String> {
+  
+  let output = frequent_words_with_mismatches(
+    input[0],
+    input[1].parse::<usize>().unwrap(),
+    input[2].parse::<i32>().unwrap()
+  );
+
+  let result = output.iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<String>>();
+
+  return result;  
+}
