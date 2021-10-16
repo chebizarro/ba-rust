@@ -283,3 +283,38 @@ fn neighbors(pattern: &str, d: i32) -> Vec<String> {
   }
   return neighborhood;
 }
+
+pub fn frequent_words_with_mismatches_and_reverse_compliments(text: &str, k: usize, d: i32) -> Vec<String> {
+  let mut patterns = Vec::new();
+  let mut freq_map = HashMap::new();
+  let n = text.len();
+
+  for i in 0..=(n-k) {
+    let pattern = String::from(&text[i..i+k]);
+
+    let neighborhood = neighbors(&pattern, d);
+
+    for neighbor in neighborhood {
+      if !freq_map.contains_key(&neighbor) &&
+        !freq_map.contains_key(reverse_compliment(neighbor.as_str()).as_str()){
+        freq_map.insert(neighbor, 1);
+      } else {
+        let c = freq_map.get(&neighbor).unwrap() + 1;
+        freq_map.insert(neighbor, c);
+      }
+    }
+  }
+
+  let m = freq_map.values().max().unwrap();
+
+  for (pattern,_) in &freq_map {
+    if freq_map[pattern] == *m {
+      let mut p = String::with_capacity(pattern.len());
+      p.push_str(&pattern);
+      patterns.push(p);
+    }
+  }
+
+  return patterns;
+
+}
