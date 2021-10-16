@@ -161,10 +161,39 @@ pub fn ba1i(input: &Vec<&str>) -> Vec<String> {
 
 pub fn ba1j(input: &Vec<&str>) -> Vec<String> {
   
-  let output = frequent_words_with_mismatches(
+  let output = frequent_words_with_mismatches_and_reverse_compliments(
     input[0],
     input[1].parse::<usize>().unwrap(),
     input[2].parse::<i32>().unwrap()
+  );
+
+  let result = output.iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<String>>();
+
+  return result;  
+}
+
+pub fn salmonella_enterica(input: &Vec<&str>) -> Vec<String> {
+  
+  let output = frequent_words_with_mismatches_and_reverse_compliments(
+    input[0],
+    input[1].parse::<usize>().unwrap(),
+    input[2].parse::<i32>().unwrap()
+  );
+
+  let result = output.iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<String>>();
+
+  return result;  
+}
+
+pub fn nbors(input: &Vec<&str>) -> Vec<String> {
+  
+  let output = neighbors(
+    input[0],
+    input[1].parse::<i32>().unwrap()
   );
 
   let result = output.iter()
