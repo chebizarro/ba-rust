@@ -18,6 +18,7 @@ fn {test_name}() {{
   let result = {name}(&params);
 
   if output.len() > 0 {{
+    assert!(output.len() == result.len());
     for res in output.iter() {{
       assert!(result.contains(res), "{{}} not found in result", res);
     }}
