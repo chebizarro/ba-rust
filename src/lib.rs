@@ -285,8 +285,15 @@ fn neighbors(pattern: &str, d: i32) -> Vec<String> {
 }
 
 pub fn frequent_words_with_mismatches_and_reverse_compliments(text: &str, k: usize, d: i32) -> Vec<String> {
+  
+  let patterns = frequent_words_with_mismatches(text, k, d);
+
+  //let rc = frequent_words_with_mismatches(&reverse_compliment(text), k, d); //: Vec<String> = patterns.iter_mut().map(|s| reverse_compliment(&s)).collect();
+
+  //patterns.append(&mut rc);
+
   //let mut patterns = Vec::new();
-  let mut freq_map = HashMap::new();
+  /*let mut freq_map = HashMap::new();
   let n = text.len();
 
   for i in 0..=(n-k) {
@@ -308,18 +315,17 @@ pub fn frequent_words_with_mismatches_and_reverse_compliments(text: &str, k: usi
 
   let m_max = freq_map.iter()
     .filter(|(_, count)| *count == m)
-    .map(|(pattern, count)| (pattern.clone(), count + freq_map.get(&reverse_compliment(pattern.as_str())).unwrap()))
+    .map(|(pattern, count)| (pattern.clone(), *count)) // + freq_map.get(&reverse_compliment(pattern.as_str())).unwrap()))
     .collect::<HashMap<String, i32>>();
 
+  println!("{:?}", m_max);
 
   m = m_max.values().max().unwrap();
 
   let patterns = m_max.iter()
     .filter(|(_, count)| *count == m)
     .map(|(pattern, _)| pattern.clone())
-    .collect::<Vec<String>>();
-
-  println!("{:?}", pa);
+    .collect::<Vec<String>>();*/
 
   return patterns;
 

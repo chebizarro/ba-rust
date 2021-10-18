@@ -171,6 +171,9 @@ pub fn ba1j(input: &Vec<&str>) -> Vec<String> {
                     .map(|x| x.to_string())
                     .collect::<Vec<String>>();
 
+
+  println!("{:?}", output);
+
   return result;  
 }
 
