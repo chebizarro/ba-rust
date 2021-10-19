@@ -1,7 +1,6 @@
 pub mod ba1;
 
 use std::collections::HashMap;
-//use common_macros::{hash_map};
 
 pub fn pattern_count(text: &str, pattern: &str) -> i32 {
   let mut count = 0;
@@ -229,37 +228,6 @@ pub fn frequent_words_with_mismatches(text: &str, k: usize, d: i32) -> Vec<Strin
   return patterns;
 
 }
-
-/*
-fn neighbors(pattern: String, d: i32) -> HashMap<String, i32> {
-
-  return pattern.chars().enumerate().fold(
-    hash_map!{pattern => 0},
-    |r,(i, _)| {
-      r.iter().flat_map(
-      |(seq, d0)| {
-        if *d0 == d {
-          return r;
-        } else {
-          let current_base = &seq.chars().nth(i).unwrap();
-          "ACGT".chars().map(|c| {
-            if c == *current_base {
-              r.insert(seq.to_string(), *d0);
-              
-            } else {
-              let mut k = seq.to_string();
-              k.remove(i);
-              k.insert(i, c);
-              r.insert(k, d0 + 1);
-            }
-          });
-          return r;
-        }});
-      return r;
-    });
-
-}
-*/
 
 fn neighbors(pattern: &str, d: i32) -> Vec<String> {
   if d == 0 {
