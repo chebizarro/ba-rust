@@ -293,11 +293,24 @@ pub fn frequent_words_with_mismatches_and_reverse_compliments(text: &str, k: usi
 
 }
 
-pub fn motif_enumeration(dna: HashSet<&str>, k: usize, d: i32) -> HashSet<&str> {
+pub fn motif_enumeration(dna: Vec<&str>, k: usize, d: i32) -> HashSet<String> {
   let mut patterns = HashSet::new(); 
 
-  for pattern in dna {
-    //for pattern_p 
+  let first = dna[0];
+  let n = first.len();
+
+  for i in 0..=(n-k) {
+    let pattern = String::from(&first[i..i+k]);
+    let neighborhood = neighbors(&pattern, d);
+
+    for neighbor in neighborhood {
+      let count = dna[1..].iter()
+        .filter(|text| approximate_pattern_count(text, &neighbor, d) > 0)
+        .count();
+      if count == (dna.len() -1) {
+        patterns.insert(neighbor);
+      }
+    }
   }
 
   return patterns;

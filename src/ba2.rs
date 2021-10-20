@@ -2,8 +2,9 @@ use super::*;
 
 pub fn ba2a(input: &Vec<&str>) -> Vec<String> {
   
-  let output = neighbors(
-    input[0],
+  let output = motif_enumeration(
+    input[2..].iter().map(|s| *s).collect::<Vec<&str>>(),
+    input[0].parse::<usize>().unwrap(),
     input[1].parse::<i32>().unwrap()
   );
 
