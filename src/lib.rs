@@ -2,6 +2,8 @@ pub mod ba1;
 pub mod ba2;
 
 use std::collections::HashMap;
+use std::collections::HashSet;
+
 
 pub fn pattern_count(text: &str, pattern: &str) -> i32 {
   let mut count = 0;
@@ -259,7 +261,6 @@ pub fn frequent_words_with_mismatches_and_reverse_compliments(text: &str, k: usi
   let n = text.len();
 
   for i in 0..=(n-k) {
-
     let pattern = String::from(&text[i..i+k]);
     let neighborhood = neighbors(&pattern, d);
 
@@ -287,6 +288,17 @@ pub fn frequent_words_with_mismatches_and_reverse_compliments(text: &str, k: usi
     .filter(|(_, count)| *count == m)
     .map(|(pattern, _)| pattern.clone())
     .collect::<Vec<String>>();
+
+  return patterns;
+
+}
+
+pub fn motif_enumeration(dna: HashSet<&str>, k: usize, d: i32) -> HashSet<&str> {
+  let mut patterns = HashSet::new(); 
+
+  for pattern in dna {
+    //for pattern_p 
+  }
 
   return patterns;
 
