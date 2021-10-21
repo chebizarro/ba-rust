@@ -316,3 +316,28 @@ pub fn motif_enumeration(dna: Vec<&str>, k: usize, d: i32) -> HashSet<String> {
   return patterns;
 
 }
+
+fn distance_between_pattern_and_strings(pattern: &str, dna: HashSet<String>) -> i32 {
+  let k = patten.len();
+  let mut distance = 0;
+
+  for text in dna {
+    let mut hammingDistance = i32::MAX;
+    let n = text.len();
+    for i in 0..=(n-k) {
+      let pattern_p = text[i..i+k];
+      if hammingDistance > hamming_distance(pattern, pattern_p) {
+        hammingDistance = hamming_distance(pattern, pattern_p);
+      }
+      distance += hammingDistance;
+    }
+  }
+  return distance;
+}
+
+pub fn median_string(dna: Vec<&str>, k: usize) -> HashSet<String> {
+  let distance = i32::MAX;
+
+
+
+}
