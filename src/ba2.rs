@@ -17,7 +17,7 @@ pub fn ba2a(input: &Vec<&str>) -> Vec<String> {
 
 pub fn ba2b(input: &Vec<&str>) -> Vec<String> {
   
-  let output = motif_enumeration(
+  let output = median_string(
     input[1..].iter().map(|s| *s).collect::<Vec<&str>>(),
     input[0].parse::<usize>().unwrap()
   );

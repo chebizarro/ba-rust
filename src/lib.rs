@@ -317,15 +317,15 @@ pub fn motif_enumeration(dna: Vec<&str>, k: usize, d: i32) -> HashSet<String> {
 
 }
 
-fn distance_between_pattern_and_strings(pattern: &str, dna: HashSet<String>) -> i32 {
-  let k = patten.len();
+fn distance_between_pattern_and_strings(pattern: &str, dna: &Vec<&str>) -> i32 {
+  let k = pattern.len();
   let mut distance = 0;
 
   for text in dna {
     let mut hammingDistance = i32::MAX;
     let n = text.len();
     for i in 0..=(n-k) {
-      let pattern_p = text[i..i+k];
+      let pattern_p = &text[i..i+k];
       if hammingDistance > hamming_distance(pattern, pattern_p) {
         hammingDistance = hamming_distance(pattern, pattern_p);
       }
@@ -335,9 +335,26 @@ fn distance_between_pattern_and_strings(pattern: &str, dna: HashSet<String>) -> 
   return distance;
 }
 
-pub fn median_string(dna: Vec<&str>, k: usize) -> HashSet<String> {
-  let distance = i32::MAX;
+pub fn median_string(dna: Vec<&str>, k: usize) -> Vec<String> {
+  let mut distance = i32::MAX;
+  let nucleotides = vec!["A","C","G", "T"];
+  let mut median = Vec::new();
+
+  let patterns = nucleotides.iter()
+    .map(|n| neighbors(&n.repeat(k), distance))
+    .flat_map(|v| v.into_iter())
+    .collect::<Vec<String>>();
+
+  for pattern in patterns {
+    if distance > distance_between_pattern_and_strings(&pattern, &dna) {
+      distance = distance_between_pattern_and_strings(&pattern, &dna);
+      median.push(pattern);
+    }
+  }
+
+  println!("{:?}", median);
 
 
+  return median;
 
 }
