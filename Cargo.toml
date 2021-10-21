@@ -10,3 +10,4 @@ path = "src/lib.rs"
 
 [dependencies]
 itertools = "0.10.1"
+common_macros = "0.1.1"

@@ -1,3 +1,5 @@
+#![feature(total_cmp)]
+
 pub mod ba1;
 pub mod ba2;
 
@@ -353,5 +355,25 @@ pub fn median_string(dna: Vec<&str>, k: usize) -> Vec<String> {
   }
 
   return vec![median.last().unwrap().clone()];
+}
+
+pub fn most_probable(text: &str, k: usize, profile: HashMap<String, Vec<f32>>) -> String {
+
+  let n = text.len();
+  let mut output = HashMap::new();
+
+
+  for i in 0..=(n-k) {
+    let pattern = &text[i..i+k];
+
+    let prob = pattern.chars()
+      .enumerate()
+      .fold(1.0, |acc, (x, c)| acc * profile[&c.to_string()][x]);
+
+    output.insert(pattern, prob);
+  }
+
+  return output.iter().max_by(|a, b| a.1.total_cmp(b.1))
+    .map(|(p, _v)| p).unwrap().to_string();
 
 }
