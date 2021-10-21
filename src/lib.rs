@@ -358,10 +358,8 @@ pub fn median_string(dna: Vec<&str>, k: usize) -> Vec<String> {
 }
 
 pub fn most_probable(text: &str, k: usize, profile: HashMap<String, Vec<f32>>) -> String {
-
   let n = text.len();
   let mut output = HashMap::new();
-
 
   for i in 0..=(n-k) {
     let pattern = &text[i..i+k];
