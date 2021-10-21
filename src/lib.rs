@@ -322,15 +322,15 @@ fn distance_between_pattern_and_strings(pattern: &str, dna: &Vec<&str>) -> i32 {
   let mut distance = 0;
 
   for text in dna {
-    let mut hammingDistance = i32::MAX;
+    let mut hamming_d = i32::MAX;
     let n = text.len();
     for i in 0..=(n-k) {
       let pattern_p = &text[i..i+k];
-      if hammingDistance > hamming_distance(pattern, pattern_p) {
-        hammingDistance = hamming_distance(pattern, pattern_p);
+      if hamming_d > hamming_distance(pattern, pattern_p) {
+        hamming_d = hamming_distance(pattern, pattern_p);
       }
-      distance += hammingDistance;
     }
+    distance += hamming_d;
   }
   return distance;
 }
@@ -352,9 +352,6 @@ pub fn median_string(dna: Vec<&str>, k: usize) -> Vec<String> {
     }
   }
 
-  println!("{:?}", median);
-
-
-  return median;
+  return vec![median.last().unwrap().clone()];
 
 }
