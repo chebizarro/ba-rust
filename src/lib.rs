@@ -375,3 +375,16 @@ pub fn most_probable(text: &str, k: usize, profile: HashMap<String, Vec<f32>>) -
     .map(|(p, _v)| p).unwrap().to_string();
 
 }
+
+pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
+
+  let best_motifs = dna.iter()
+    .map(|s| s[0..=k].to_string())
+    .collect::<Vec<String>>();
+
+  //(0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]); 
+
+
+  return best_motifs;
+
+}

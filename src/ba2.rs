@@ -49,3 +49,20 @@ pub fn ba2c(input: &Vec<&str>) -> Vec<String> {
 
   return vec![output];  
 }
+
+pub fn ba2d(input: &Vec<&str>) -> Vec<String> {
+  
+  let output = greedy_motif_search(
+    input[2..].iter().map(|s| *s).collect::<Vec<&str>>(),
+    input[0].parse::<usize>().unwrap(),
+    input[1].parse::<usize>().unwrap()
+  );
+
+  println!("{:?}", output);
+
+  let result = output.iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<String>>();
+
+  return result;  
+}
