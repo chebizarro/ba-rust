@@ -382,7 +382,12 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
     .map(|s| s[0..=k].to_string())
     .collect::<Vec<String>>();
 
-  //(0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]); 
+  for motif in (0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]) {
+    let mut motifv = vec![motif];
+    for i in 1..=t {
+      
+    }
+  }
 
 
   return best_motifs;
