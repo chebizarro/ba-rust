@@ -383,9 +383,11 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
     .collect::<Vec<String>>();
 
   for motif in (0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]) {
-    let mut motifv = vec![motif];
+    let mut motifs = vec![motif];
     for i in 1..=t {
       
+      let profile = motifs.iter()
+        .
     }
   }
 
