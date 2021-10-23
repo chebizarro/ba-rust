@@ -383,11 +383,18 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
     .collect::<Vec<String>>();
 
   for motif in (0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]) {
-    let mut motifs = vec![motif];
+    let mut motifs = vec![motif.to_string()];
     for i in 1..=t {
-      
-      let profile = motifs.iter()
-        .
+      let mut score = HashMap::new();
+      for (x, c) in motifs.iter().flat_map(|s| s.chars().enumerate()) {
+        (*score.entry(c).or_insert(vec![0,k]))[x] += 1;
+      }
+
+      let profile = score.iter()
+        .map(|(m, s)| (m.to_string(), s.iter().map(|v| (v / motifs.len()) as f32).collect::<Vec<f32>>()))
+        .collect::<HashMap<String, Vec<f32>>>();
+
+      motifs.push(most_probable(dna[i], k, profile));
     }
   }
 
