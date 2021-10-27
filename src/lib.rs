@@ -5,7 +5,7 @@ pub mod ba2;
 
 use std::collections::HashMap;
 use std::collections::HashSet;
-
+use common_macros::hash_map;
 
 pub fn pattern_count(text: &str, pattern: &str) -> i32 {
   let mut count = 0;
@@ -384,17 +384,27 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
 
   for motif in (0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]) {
     let mut motifs = vec![motif.to_string()];
-    for i in 1..=t {
-      let mut score = HashMap::new();
-      for (x, c) in motifs.iter().flat_map(|s| s.chars().enumerate()) {
-        (*score.entry(c).or_insert(vec![0,k]))[x] += 1;
+    for idx in 1..t {
+      let mut score = hash_map!{
+        'A' => vec![0; k],
+        'C' => vec![0; k],
+        'G' => vec![0; k],
+        'T' => vec![0; k],
+      };
+      
+      for s in &motifs {
+        for (x, c) in s.chars().enumerate() {
+          (*score.entry(c).or_insert(vec![0; k]))[x] += 1;
+        }
       }
 
       let profile = score.iter()
         .map(|(m, s)| (m.to_string(), s.iter().map(|v| (v / motifs.len()) as f32).collect::<Vec<f32>>()))
         .collect::<HashMap<String, Vec<f32>>>();
 
-      motifs.push(most_probable(dna[i], k, profile));
+      motifs.push(most_probable(dna[idx], k, profile));
+
+
     }
   }
 
