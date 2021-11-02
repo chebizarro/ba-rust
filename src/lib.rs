@@ -376,6 +376,19 @@ pub fn most_probable(text: &str, k: usize, profile: HashMap<String, Vec<f32>>) -
 
 }
 
+fn score(motifs: Vec<String>) -> i32 {
+
+  let consensus = find_consensus(motifs);
+
+  let mut score = 0;
+
+  for motif in motifs {
+    score += hamming_distance(consensus, &motif);
+  }
+
+  return score;
+}
+
 pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
 
   let best_motifs = dna.iter()
@@ -403,11 +416,11 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
         .collect::<HashMap<String, Vec<f32>>>();
 
       motifs.push(most_probable(dna[idx], k, profile));
-
-
+    }
+    if score(motifs) < score(best_motifs) {
+      best_motifs = motifs;
     }
   }
-
 
   return best_motifs;
 
