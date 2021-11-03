@@ -378,15 +378,44 @@ pub fn most_probable(text: &str, k: usize, profile: HashMap<String, Vec<f32>>) -
 
 fn score(motifs: &Vec<String>) -> i32 {
 
-  let consensus = median_string(motifs.iter().map(|s| s.as_str()).collect(), motifs[0].len());
+  let profile = make_profile(motifs);
+  let k = motifs[0].len();
+
+  let consensus = profile.iter().fold(String::with_capacity(k), |(n, v)| );
 
   let mut score = 0;
 
   for motif in motifs {
-    score += hamming_distance(consensus[0].as_str(), &motif);
+    score += hamming_distance(consensus, &motif);
   }
 
   return score;
+}
+
+fn make_profile(motifs: &Vec<String>) -> HashMap<String, Vec<f32>> {
+
+  let k = motifs[0].len();
+
+  let mut score = hash_map!{
+    'A' => vec![0; k],
+    'C' => vec![0; k],
+    'G' => vec![0; k],
+    'T' => vec![0; k],
+  };
+  
+  for s in motifs {
+    for (x, c) in s.chars().enumerate() {
+      (*score.entry(c).or_insert(vec![0; k]))[x] += 1;
+    }
+  }
+
+  return score.iter()
+    .map(|(m, s)| (m.to_string(),
+      s.iter()
+      .map(|v| (v / motifs.len()) as f32)
+      .collect::<Vec<f32>>()))
+    .collect::<HashMap<String, Vec<f32>>>();
+
 }
 
 pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
@@ -398,22 +427,7 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
   for motif in (0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]) {
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
-      let mut score = hash_map!{
-        'A' => vec![0; k],
-        'C' => vec![0; k],
-        'G' => vec![0; k],
-        'T' => vec![0; k],
-      };
-      
-      for s in &motifs {
-        for (x, c) in s.chars().enumerate() {
-          (*score.entry(c).or_insert(vec![0; k]))[x] += 1;
-        }
-      }
-
-      let profile = score.iter()
-        .map(|(m, s)| (m.to_string(), s.iter().map(|v| (v / motifs.len()) as f32).collect::<Vec<f32>>()))
-        .collect::<HashMap<String, Vec<f32>>>();
+      let profile = make_profile(&motifs);
 
       motifs.push(most_probable(dna[idx], k, profile));
     }
