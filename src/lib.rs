@@ -385,8 +385,8 @@ fn score(motifs: &Vec<String>) -> i32 {
 
   for i in 0..k {
     consensus += profile.keys()
-      .max_by(|a, b| profile[*a][i].total_cmp(&profile[*b][i])).unwrap();
-
+      .max_by(|a, b| profile[*a][i].total_cmp(&profile[*b][i]))
+      .unwrap();
   }
 
   let mut score = 0;
