@@ -381,12 +381,18 @@ fn score(motifs: &Vec<String>) -> i32 {
   let profile = make_profile(motifs);
   let k = motifs[0].len();
 
-  let consensus = profile.iter().fold(String::with_capacity(k), |(n, v)| );
+  let mut consensus = String::with_capacity(k);
+
+  for i in 0..k {
+    consensus += profile.keys()
+      .max_by(|a, b| profile[*a][i].total_cmp(&profile[*b][i])).unwrap();
+
+  }
 
   let mut score = 0;
 
   for motif in motifs {
-    score += hamming_distance(consensus, &motif);
+    score += hamming_distance(&consensus, &motif);
   }
 
   return score;
@@ -428,7 +434,6 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
       let profile = make_profile(&motifs);
-
       motifs.push(most_probable(dna[idx], k, profile));
     }
     if score(&motifs) < score(&best_motifs) {
