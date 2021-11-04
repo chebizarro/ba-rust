@@ -385,6 +385,9 @@ pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) 
 
 fn score(motifs: &Vec<String>) -> i32 {
 
+  let sum = (0..motifs.len()).fold(n, |n, i| motifs.iter(). )
+
+
   let profile = make_profile(motifs);
   let k = motifs[0].len();
 
