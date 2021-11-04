@@ -392,7 +392,7 @@ fn score(motifs: &Vec<String>) -> i32 {
 
   for i in 0..k {
     consensus += profile.keys()
-      .max_by(|a, b| profile[*a][i].total_cmp(&profile[*b][i]))
+      .max_by(|a, b| profile[*b][i].total_cmp(&profile[*a][i]))
       .unwrap();
   }
 
