@@ -1,5 +1,5 @@
 use super::*;
-use common_macros::hash_map;
+use common_macros::b_tree_map;
 
 pub fn ba2a(input: &Vec<&str>) -> Vec<String> {
   
@@ -34,7 +34,7 @@ pub fn ba2c(input: &Vec<&str>) -> Vec<String> {
   
   let u = input[1].parse::<usize>().unwrap();
 
-  let profile = hash_map!{
+  let profile = b_tree_map!{
     "A".to_string() => input[2..=u+2].iter().map(|f| f.parse::<f32>().unwrap()).collect(),
     "C".to_string() => input[u+2..u*2+2].iter().map(|f| f.parse::<f32>().unwrap()).collect(),
     "G".to_string() => input[u*2+2..u*3+2].iter().map(|f| f.parse::<f32>().unwrap()).collect(),

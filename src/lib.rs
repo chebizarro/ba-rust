@@ -5,7 +5,10 @@ pub mod ba2;
 
 use std::collections::HashMap;
 use std::collections::HashSet;
-use common_macros::hash_map;
+use std::collections::BTreeMap;
+
+use common_macros::b_tree_map;
+
 
 pub fn pattern_count(text: &str, pattern: &str) -> i32 {
   let mut count = 0;
@@ -357,9 +360,9 @@ pub fn median_string(dna: Vec<&str>, k: usize) -> Vec<String> {
   return vec![median.last().unwrap().clone()];
 }
 
-pub fn most_probable(text: &str, k: usize, profile: HashMap<String, Vec<f32>>) -> String {
+pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) -> String {
   let n = text.len();
-  let mut output = HashMap::new();
+  let mut output = BTreeMap::new();
 
   for i in 0..=(n-k) {
     let pattern = &text[i..i+k];
@@ -371,9 +374,13 @@ pub fn most_probable(text: &str, k: usize, profile: HashMap<String, Vec<f32>>) -
     output.insert(pattern, prob);
   }
 
-  return output.iter().max_by(|a, b| a.1.total_cmp(b.1))
+  let result = output.iter().rev().max_by(|a, b| a.1.total_cmp(b.1))
     .map(|(p, _v)| p).unwrap().to_string();
 
+
+    println!("{:?}", result);
+
+  return result;
 }
 
 fn score(motifs: &Vec<String>) -> i32 {
@@ -389,20 +396,17 @@ fn score(motifs: &Vec<String>) -> i32 {
       .unwrap();
   }
 
-  let mut score = 0;
-
-  for motif in motifs {
-    score += hamming_distance(&consensus, &motif);
-  }
+  let score = motifs.iter()
+    .fold(0, |s, m| s + hamming_distance(&consensus, &m));
 
   return score;
 }
 
-fn make_profile(motifs: &Vec<String>) -> HashMap<String, Vec<f32>> {
+fn make_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
 
   let k = motifs[0].len();
 
-  let mut score = hash_map!{
+  let mut score = b_tree_map!{
     'A' => vec![0; k],
     'C' => vec![0; k],
     'G' => vec![0; k],
@@ -420,22 +424,23 @@ fn make_profile(motifs: &Vec<String>) -> HashMap<String, Vec<f32>> {
       s.iter()
       .map(|v| (v / motifs.len()) as f32)
       .collect::<Vec<f32>>()))
-    .collect::<HashMap<String, Vec<f32>>>();
+    .collect::<BTreeMap<String, Vec<f32>>>();
 
 }
 
 pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
 
   let mut best_motifs = dna.iter()
-    .map(|s| s[0..=k].to_string())
+    .map(|s| s[0..k].to_string())
     .collect::<Vec<String>>();
 
-  for motif in (0..=dna[0].len()-k).map(|i| &dna[0][i..i+k]) {
+  for motif in (0..=(dna[0].len()-k)).map(|i| &dna[0][i..i+k]) {
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
       let profile = make_profile(&motifs);
       motifs.push(most_probable(dna[idx], k, profile));
     }
+
     if score(&motifs) < score(&best_motifs) {
       best_motifs = motifs;
     }
