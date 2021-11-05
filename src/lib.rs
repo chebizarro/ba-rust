@@ -385,31 +385,23 @@ pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) 
 
 fn score(motifs: &Vec<String>) -> i32 {
 
+  let profile = make_profile(motifs);
   let k = motifs[0].len();
-  let mut sum = 0;
+
+  let mut consensus = String::with_capacity(k);
 
   for i in 0..k {
-
-    let mut score = b_tree_map!{
-      'A' => 0,
-      'C' => 0,
-      'G' => 0,
-      'T' => 0,
-    };
-
-    for motif in motifs {
-      let c = motif.chars().nth(i).unwrap();
-      (*score.entry(c).or_insert(0)) += 1;
-    }
-    let c = score.values().max().unwrap();
-    sum += (motifs.len() as i32) - c;
-    //println!("{:?} {} - {} = {}", score, k, c, sum);
+    consensus += profile.keys()
+      .max_by(|a, b| profile[*a][i].total_cmp(&profile[*b][i])).unwrap();
   }
 
-  //println!("{}", sum);
+  let score = motifs.iter().fold(0, |s, m| s + hamming_distance(&consensus, &m));
 
-  return sum;
+  println!("{}", consensus);
 
+  println!("{}", score);
+
+  return score;
 }
 
 fn make_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
@@ -417,22 +409,24 @@ fn make_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
   let k = motifs[0].len();
 
   let mut score = b_tree_map!{
-    'A' => vec![0; k],
-    'C' => vec![0; k],
-    'G' => vec![0; k],
-    'T' => vec![0; k],
+    'A' => vec![0.0; k],
+    'C' => vec![0.0; k],
+    'G' => vec![0.0; k],
+    'T' => vec![0.0; k],
   };
   
   for s in motifs {
     for (x, c) in s.chars().enumerate() {
-      (*score.entry(c).or_insert(vec![0; k]))[x] += 1;
+      (*score.entry(c).or_insert(vec![0.0; k]))[x] += 1.0;
     }
   }
+
+  let l = motifs.len() as f32;  
 
   return score.iter()
     .map(|(m, s)| (m.to_string(),
       s.iter()
-      .map(|v| (v / motifs.len()) as f32)
+      .map(|v| v / l)
       .collect::<Vec<f32>>()))
     .collect::<BTreeMap<String, Vec<f32>>>();
 
@@ -448,10 +442,13 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
       let profile = make_profile(&motifs);
+      //println!("{:?}", motifs);
+      //println!("{:?}", profile);
       motifs.push(most_probable(dna[idx], k, profile));
     }
 
     if score(&motifs) < score(&best_motifs) {
+      println!("{:?}", motifs);
       best_motifs = motifs;
     }
   }
