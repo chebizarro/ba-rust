@@ -20,7 +20,7 @@ fn {test_name}() {{
   if output.len() > 0 {{
     assert!(output.len() == result.len());
     for res in output.iter() {{
-      assert!(result.contains(res), "{{}} not found in result", res);
+      assert!(result.contains(res), "{{}} not found in result {{:?}}", res, result);
     }}
   }} else {{
     let out = result.iter()

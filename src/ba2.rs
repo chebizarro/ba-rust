@@ -58,8 +58,6 @@ pub fn ba2d(input: &Vec<&str>) -> Vec<String> {
     input[1].parse::<usize>().unwrap()
   );
 
-  println!("{:?}", output);
-
   let result = output.iter()
                     .map(|x| x.to_string())
                     .collect::<Vec<String>>();

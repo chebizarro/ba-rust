@@ -374,35 +374,42 @@ pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) 
     output.insert(pattern, prob);
   }
 
-  let result = output.iter().rev().max_by(|a, b| a.1.total_cmp(b.1))
-    .map(|(p, _v)| p).unwrap().to_string();
-
-
-    println!("{:?}", result);
+  let result = output.iter()
+    .max_by(|a, b| a.1.total_cmp(b.1))
+    .map(|(p, _v)| p)
+    .unwrap()
+    .to_string();
 
   return result;
 }
 
 fn score(motifs: &Vec<String>) -> i32 {
 
-  let sum = (0..motifs.len()).fold(n, |n, i| motifs.iter(). )
-
-
-  let profile = make_profile(motifs);
   let k = motifs[0].len();
-
-  let mut consensus = String::with_capacity(k);
+  let mut sum = 0;
 
   for i in 0..k {
-    consensus += profile.keys()
-      .max_by(|a, b| profile[*b][i].total_cmp(&profile[*a][i]))
-      .unwrap();
+
+    let mut score = b_tree_map!{
+      'A' => 0,
+      'C' => 0,
+      'G' => 0,
+      'T' => 0,
+    };
+
+    for motif in motifs {
+      let c = motif.chars().nth(i).unwrap();
+      (*score.entry(c).or_insert(0)) += 1;
+    }
+    let c = score.values().max().unwrap();
+    sum += (motifs.len() as i32) - c;
+    //println!("{:?} {} - {} = {}", score, k, c, sum);
   }
 
-  let score = motifs.iter()
-    .fold(0, |s, m| s + hamming_distance(&consensus, &m));
+  //println!("{}", sum);
 
-  return score;
+  return sum;
+
 }
 
 fn make_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
