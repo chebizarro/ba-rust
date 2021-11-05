@@ -362,7 +362,7 @@ pub fn median_string(dna: Vec<&str>, k: usize) -> Vec<String> {
 
 pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) -> String {
   let n = text.len();
-  let mut output = BTreeMap::new();
+  let mut output = Vec::new();
 
   for i in 0..=(n-k) {
     let pattern = &text[i..i+k];
@@ -371,16 +371,15 @@ pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) 
       .enumerate()
       .fold(1.0, |acc, (x, c)| acc * profile[&c.to_string()][x]);
 
-    output.insert(pattern, prob);
+    output.push((pattern, prob));
   }
 
-  let result = output.iter()
-    .max_by(|a, b| a.1.total_cmp(b.1))
+  return output.iter().rev()
+    .max_by(|a, b| a.1.total_cmp(&b.1))
     .map(|(p, _v)| p)
     .unwrap()
     .to_string();
 
-  return result;
 }
 
 fn score(motifs: &Vec<String>) -> i32 {
@@ -388,20 +387,14 @@ fn score(motifs: &Vec<String>) -> i32 {
   let profile = make_profile(motifs);
   let k = motifs[0].len();
 
-  let mut consensus = String::with_capacity(k);
+  let consensus = (0..k).fold(
+    String::with_capacity(k), |c, i| c + profile.keys()
+    .max_by(|a, b| profile[*a][i].total_cmp(&profile[*b][i]))
+    .unwrap()
+  );
 
-  for i in 0..k {
-    consensus += profile.keys()
-      .max_by(|a, b| profile[*a][i].total_cmp(&profile[*b][i])).unwrap();
-  }
-
-  let score = motifs.iter().fold(0, |s, m| s + hamming_distance(&consensus, &m));
-
-  println!("{}", consensus);
-
-  println!("{}", score);
-
-  return score;
+  return motifs.iter()
+    .fold(0, |s, m| s + hamming_distance(&consensus, &m));
 }
 
 fn make_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
@@ -442,17 +435,14 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
       let profile = make_profile(&motifs);
-      //println!("{:?}", motifs);
-      //println!("{:?}", profile);
-      motifs.push(most_probable(dna[idx], k, profile));
+      let mp = most_probable(dna[idx], k, profile);
+      motifs.push(mp);
     }
 
     if score(&motifs) < score(&best_motifs) {
-      println!("{:?}", motifs);
       best_motifs = motifs;
     }
   }
 
   return best_motifs;
-
 }
