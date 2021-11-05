@@ -9,7 +9,6 @@ use std::collections::BTreeMap;
 
 use common_macros::b_tree_map;
 
-
 pub fn pattern_count(text: &str, pattern: &str) -> i32 {
   let mut count = 0;
 
@@ -234,7 +233,6 @@ pub fn frequent_words_with_mismatches(text: &str, k: usize, d: i32) -> Vec<Strin
   }
 
   return patterns;
-
 }
 
 fn neighbors(pattern: &str, d: i32) -> Vec<String> {
@@ -295,7 +293,6 @@ pub fn frequent_words_with_mismatches_and_reverse_compliments(text: &str, k: usi
     .collect::<Vec<String>>();
 
   return patterns;
-
 }
 
 pub fn motif_enumeration(dna: Vec<&str>, k: usize, d: i32) -> HashSet<String> {
@@ -319,7 +316,6 @@ pub fn motif_enumeration(dna: Vec<&str>, k: usize, d: i32) -> HashSet<String> {
   }
 
   return patterns;
-
 }
 
 fn distance_between_pattern_and_strings(pattern: &str, dna: &Vec<&str>) -> i32 {
@@ -379,7 +375,6 @@ pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) 
     .map(|(p, _v)| p)
     .unwrap()
     .to_string();
-
 }
 
 fn score(motifs: &Vec<String>) -> i32 {
@@ -422,7 +417,6 @@ fn make_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
       .map(|v| v / l)
       .collect::<Vec<f32>>()))
     .collect::<BTreeMap<String, Vec<f32>>>();
-
 }
 
 pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
@@ -472,7 +466,6 @@ fn make_pseudo_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
       .map(|v| v / l)
       .collect::<Vec<f32>>()))
     .collect::<BTreeMap<String, Vec<f32>>>();
-
 }
 
 pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
