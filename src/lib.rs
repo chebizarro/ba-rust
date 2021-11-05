@@ -446,3 +446,53 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
 
   return best_motifs;
 }
+
+fn make_pseudo_profile(motifs: &Vec<String>) -> BTreeMap<String, Vec<f32>> {
+
+  let k = motifs[0].len();
+
+  let mut score = b_tree_map!{
+    'A' => vec![1.0; k],
+    'C' => vec![1.0; k],
+    'G' => vec![1.0; k],
+    'T' => vec![1.0; k],
+  };
+  
+  for s in motifs {
+    for (x, c) in s.chars().enumerate() {
+      (*score.entry(c).or_insert(vec![1.0; k]))[x] += 1.0;
+    }
+  }
+
+  let l = motifs.len() as f32;  
+
+  return score.iter()
+    .map(|(m, s)| (m.to_string(),
+      s.iter()
+      .map(|v| v / l)
+      .collect::<Vec<f32>>()))
+    .collect::<BTreeMap<String, Vec<f32>>>();
+
+}
+
+pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
+
+  let mut best_motifs = dna.iter()
+    .map(|s| s[0..k].to_string())
+    .collect::<Vec<String>>();
+
+  for motif in (0..=(dna[0].len()-k)).map(|i| &dna[0][i..i+k]) {
+    let mut motifs = vec![motif.to_string()];
+    for idx in 1..t {
+      let profile = make_pseudo_profile(&motifs);
+      let mp = most_probable(dna[idx], k, profile);
+      motifs.push(mp);
+    }
+
+    if score(&motifs) < score(&best_motifs) {
+      best_motifs = motifs;
+    }
+  }
+
+  return best_motifs;
+}

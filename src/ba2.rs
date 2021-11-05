@@ -64,3 +64,32 @@ pub fn ba2d(input: &Vec<&str>) -> Vec<String> {
 
   return result;  
 }
+
+pub fn ba2e(input: &Vec<&str>) -> Vec<String> {
+  
+  let output = greedy_motif_search_with_pseudocounts(
+    input[2..].iter().map(|s| *s).collect::<Vec<&str>>(),
+    input[0].parse::<usize>().unwrap(),
+    input[1].parse::<usize>().unwrap()
+  );
+
+  let result = output.iter()
+                    .map(|x| x.to_string())
+                    .collect::<Vec<String>>();
+
+  return result;  
+}
+
+pub fn dbpas(input: &Vec<&str>) -> Vec<String> {
+
+  let output = distance_between_pattern_and_strings(
+    input[0],
+    &input[1..].iter().map(|s| *s).collect::<Vec<&str>>()
+  );
+
+  let result = vec![output.to_string()];
+
+  return result;  
+
+
+}
