@@ -489,3 +489,7 @@ pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize)
 
   return best_motifs;
 }
+
+pub fn randomized_motif_search(dna: &str, k: usize, t: usize) -> Vec<String> {
+  
+}
