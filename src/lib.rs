@@ -490,7 +490,16 @@ pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize)
   return best_motifs;
 }
 
-fn motifs(dna: Vec<&str>, profile: BTreeMap<String, Vec<f32>>) {
+fn motifs(dna: Vec<&str>, profile: BTreeMap<String, Vec<f32>>) ->Vec<String> {
+
+  let mut motifs = Vec::new();
+
+  for 
+
+  let profile = make_pseudo_profile(&motifs);
+  let mp = most_probable(dna[idx], k, profile);
+  motifs.push(mp);
+
 
 }
 
