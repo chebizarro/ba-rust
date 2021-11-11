@@ -6,6 +6,7 @@ pub mod ba2;
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::collections::BTreeMap;
+use rand::{thread_rng, Rng};
 
 use common_macros::b_tree_map;
 
@@ -490,25 +491,10 @@ pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize)
   return best_motifs;
 }
 
+/*
 fn motifs(dna: Vec<&str>, profile: BTreeMap<String, Vec<f32>>) ->Vec<String> {
 
-  let mut motifs = Vec::new();
-
-  for 
-
-  let profile = make_pseudo_profile(&motifs);
-  let mp = most_probable(dna[idx], k, profile);
-  motifs.push(mp);
-
-
-}
-
-pub fn randomized_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
-  let mut best_motifs = dna.iter()
-  .map(|s| s[0..k].to_string())
-  .collect::<Vec<String>>();
-
-  for motif in (0..=(dna[0].len()-k)).map(|i| &dna[0][i..i+k]) {
+  for motif in (0..=(l-k)).map(|i| &dna[0][i..i+k]) {
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
       let profile = make_pseudo_profile(&motifs);
@@ -521,6 +507,28 @@ pub fn randomized_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String
       return best_motifs;
     }
   }
+  
+}*/
 
-  return best_motifs;
+pub fn randomized_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
+
+  let mut rng = thread_rng();
+  let l = dna[0].len();
+
+  let mut motifs = dna.iter()
+    .map(|s| s[rng.gen_range(0..l-k)..k].to_string())
+    .collect::<Vec<String>>();
+
+  let mut best_motifs = motifs.iter().map(|s| s.to_owned()).collect();
+
+  loop {
+    let profile = make_pseudo_profile(&motifs);
+    let motifs = motifs(profile, dna);
+
+    if score(&motifs) < score(&best_motifs) {
+      best_motifs = motifs;
+    } else {
+      return best_motifs;
+    }
+  }
 }
