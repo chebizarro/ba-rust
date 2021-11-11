@@ -491,8 +491,8 @@ pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize)
   return best_motifs;
 }
 
-/*
-fn motifs(dna: Vec<&str>, profile: BTreeMap<String, Vec<f32>>) ->Vec<String> {
+
+fn make_motifs(dna: Vec<&str>, profile: BTreeMap<String, Vec<f32>>) ->Vec<String> {
 
   for motif in (0..=(l-k)).map(|i| &dna[0][i..i+k]) {
     let mut motifs = vec![motif.to_string()];
@@ -507,8 +507,8 @@ fn motifs(dna: Vec<&str>, profile: BTreeMap<String, Vec<f32>>) ->Vec<String> {
       return best_motifs;
     }
   }
-  
-}*/
+
+}
 
 pub fn randomized_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
 
@@ -523,7 +523,7 @@ pub fn randomized_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String
 
   loop {
     let profile = make_pseudo_profile(&motifs);
-    let motifs = motifs(profile, dna);
+    let motifs = make_motifs(dna, profile);
 
     if score(&motifs) < score(&best_motifs) {
       best_motifs = motifs;
