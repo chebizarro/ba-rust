@@ -44,7 +44,7 @@ pub fn ba2c(input: &Vec<&str>) -> Vec<String> {
   let output = most_probable(
     input[0],
     u,
-    profile
+    &profile
   );
 
   return vec![output];  
@@ -91,5 +91,27 @@ pub fn dbpas(input: &Vec<&str>) -> Vec<String> {
 
   return result;  
 
+}
 
+pub fn ba2f(input: &Vec<&str>) -> Vec<String> {
+  
+  let i1 = input[2..].iter().map(|s| *s).collect::<Vec<&str>>();
+  let i2 = input[0].parse::<usize>().unwrap();
+  let i3 = input[1].parse::<usize>().unwrap();
+
+  let mut output = Vec::new();
+
+  for _ in 0..1000 {
+    output.push(randomized_motif_search(
+      &i1,
+      i2,
+      i3
+    ));
+  }
+
+  let result = output.iter()
+                    .max_by(|a, b| score(a).cmp(&score(b)))
+                    .unwrap();
+
+  return result.to_vec();  
 }
