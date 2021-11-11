@@ -1,4 +1,5 @@
 #![feature(total_cmp)]
+#![feature(map_first_last)]
 
 pub mod ba1;
 pub mod ba2;
@@ -357,7 +358,7 @@ pub fn median_string(dna: Vec<&str>, k: usize) -> Vec<String> {
   return vec![median.last().unwrap().clone()];
 }
 
-pub fn most_probable(text: &str, k: usize, profile: BTreeMap<String, Vec<f32>>) -> String {
+pub fn most_probable(text: &str, k: usize, profile: &BTreeMap<String, Vec<f32>>) -> String {
   let n = text.len();
   let mut output = Vec::new();
 
@@ -430,7 +431,7 @@ pub fn greedy_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String> {
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
       let profile = make_profile(&motifs);
-      let mp = most_probable(dna[idx], k, profile);
+      let mp = most_probable(dna[idx], k, &profile);
       motifs.push(mp);
     }
 
@@ -479,7 +480,7 @@ pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize)
     let mut motifs = vec![motif.to_string()];
     for idx in 1..t {
       let profile = make_pseudo_profile(&motifs);
-      let mp = most_probable(dna[idx], k, profile);
+      let mp = most_probable(dna[idx], k, &profile);
       motifs.push(mp);
     }
 
@@ -492,21 +493,19 @@ pub fn greedy_motif_search_with_pseudocounts(dna: Vec<&str>, k: usize, t: usize)
 }
 
 
-fn make_motifs(dna: Vec<&str>, profile: BTreeMap<String, Vec<f32>>) ->Vec<String> {
+fn make_motifs(dna: &Vec<&str>, profile: BTreeMap<String, Vec<f32>>) ->Vec<String> {
 
-  for motif in (0..=(l-k)).map(|i| &dna[0][i..i+k]) {
-    let mut motifs = vec![motif.to_string()];
-    for idx in 1..t {
-      let profile = make_pseudo_profile(&motifs);
-      let mp = most_probable(dna[idx], k, profile);
+  let l = dna[0].len();
+  let k = profile.first_key_value().unwrap().1.len();
+
+    let mut motifs = Vec::new();
+    
+    for strand in dna {
+      let mp = most_probable(strand, k, &profile);
       motifs.push(mp);
     }
-    if score(&motifs) < score(&best_motifs) {
-      best_motifs = motifs;
-    } else {
-      return best_motifs;
-    }
-  }
+    
+    return motifs;
 
 }
 
@@ -523,10 +522,10 @@ pub fn randomized_motif_search(dna: Vec<&str>, k: usize, t: usize) -> Vec<String
 
   loop {
     let profile = make_pseudo_profile(&motifs);
-    let motifs = make_motifs(dna, profile);
+    motifs = make_motifs(&dna, profile);
 
     if score(&motifs) < score(&best_motifs) {
-      best_motifs = motifs;
+      best_motifs = motifs.iter().map(|s| s.to_owned()).collect();;
     } else {
       return best_motifs;
     }
