@@ -536,14 +536,13 @@ pub fn randomized_motif_search(dna: &Vec<&str>, k: usize, _: usize) -> Vec<Strin
 
 pub fn random(probabilities: Vec<f32>) -> usize {
 
-  let total = probabilities.iter()
-    .fold(0.0, |a, p| a + p);
+  let total = probabilities.iter().sum::<f32>();
 
   return probabilities.iter()
     .enumerate()
     .map(|(i, p)| (i, p/total))
-    .max_by(|a, b| a.1.total_cmp(b))
-    .map(|(i,p)| i)
+    .max_by(|a: &(usize, f32), b| a.1.total_cmp(&b.1))
+    .map(|(i, _)| i)
     .unwrap();
 }
 
