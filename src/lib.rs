@@ -515,7 +515,34 @@ pub fn randomized_motif_search(dna: &Vec<&str>, k: usize, _: usize) -> Vec<Strin
 
   let mut motifs = dna.iter()
     .map(|s| {
-      let r = rng.gen_range(0..l-k);
+      let r = rng.gen_range(0..l);
+      return s[r..r+k].to_string();
+    })
+    .collect::<Vec<String>>();
+
+  let mut best_motifs = motifs.iter().map(|s| s.to_owned()).collect();
+
+  loop {
+    let profile = make_pseudo_profile(&motifs);
+    motifs = make_motifs(dna, profile);
+
+    if score(&motifs) < score(&best_motifs) {
+      best_motifs = motifs.iter().map(|s| s.to_owned()).collect();
+    } else {
+      return best_motifs;
+    }
+  }
+}
+
+pub fn gibbs_sampler(dna: &Vec<&str>, k: usize, _: usize) -> Vec<String> {
+
+  let mut rng = thread_rng();
+  let l = dna[0].len()-k;
+  
+
+  let mut motifs = dna.iter()
+    .map(|s| {
+      let r = rng.gen_range(0..l);
       return s[r..r+k].to_string();
     })
     .collect::<Vec<String>>();

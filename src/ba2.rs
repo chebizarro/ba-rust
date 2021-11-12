@@ -110,7 +110,7 @@ pub fn ba2f(input: &Vec<&str>) -> Vec<String> {
   }
 
   let result = output.iter()
-                    .max_by(|a, b| score(a).cmp(&score(b)))
+                    .min_by(|a, b| score(a).cmp(&score(b)))
                     .unwrap();
 
   return result.to_vec();  
