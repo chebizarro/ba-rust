@@ -534,6 +534,19 @@ pub fn randomized_motif_search(dna: &Vec<&str>, k: usize, _: usize) -> Vec<Strin
   }
 }
 
+pub fn random(probabilities: Vec<f32>) -> usize {
+
+  let total = probabilities.iter()
+    .fold(0.0, |a, p| a + p);
+
+  return probabilities.iter()
+    .enumerate()
+    .map(|(i, p)| (i, p/total))
+    .max_by(|a, b| a.1.total_cmp(b))
+    .map(|(i,p)| i)
+    .unwrap();
+}
+
 pub fn gibbs_sampler(dna: &Vec<&str>, k: usize, _: usize) -> Vec<String> {
 
   let mut rng = thread_rng();
