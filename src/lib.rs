@@ -546,7 +546,7 @@ pub fn random(probabilities: Vec<f32>) -> usize {
     .unwrap();
 }
 
-pub fn gibbs_sampler(dna: &Vec<&str>, k: usize, _: usize) -> Vec<String> {
+pub fn gibbs_sampler(dna: &Vec<&str>, k: usize, t: usize, N: usize) -> Vec<String> {
 
   let mut rng = thread_rng();
   let l = dna[0].len()-k;
@@ -560,6 +560,12 @@ pub fn gibbs_sampler(dna: &Vec<&str>, k: usize, _: usize) -> Vec<String> {
     .collect::<Vec<String>>();
 
   let mut best_motifs = motifs.iter().map(|s| s.to_owned()).collect();
+
+  for i in 0..N {
+    let i = random(t);
+    
+  }
+
 
   loop {
     let profile = make_pseudo_profile(&motifs);
